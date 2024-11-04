@@ -15,8 +15,8 @@ interface BookData {
 }
 
 const FormElements = () => {
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const [bookData, setBookData] = useState<BookData>({
     title: "",
@@ -28,7 +28,11 @@ const FormElements = () => {
     language: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     const { name, value } = e.target;
     setBookData((prev) => ({ ...prev, [name]: value }));
   };
@@ -63,10 +67,10 @@ const FormElements = () => {
     <>
       <Breadcrumb pageName="Upload Book Details" />
 
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="rounded-[10px] w-full border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card p-6">
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="w-full rounded-[10px] border border-stroke bg-white p-6 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5.5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
                   Book Title
@@ -94,7 +98,7 @@ const FormElements = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="mb-3 block text-body-sm font-medium text-dark dark:text-white">
                   Description
@@ -168,7 +172,6 @@ const FormElements = () => {
                 type="file"
                 name="image"
                 ref={fileInputRef}
-
                 onChange={handleFileChange}
                 className="w-full rounded-[7px] border-[1.5px] border-stroke bg-transparent px-5.5 py-3 text-dark outline-none transition focus:border-primary dark:border-dark-3 dark:bg-dark-2 dark:text-white"
               />
@@ -176,7 +179,7 @@ const FormElements = () => {
 
             <button
               type="submit"
-              className="mt-4 rounded-[7px] bg-primary text-white px-5.5 py-3 transition hover:bg-opacity-80"
+              className="mt-4 rounded-[7px] bg-primary px-5.5 py-3 text-white transition hover:bg-opacity-80"
             >
               Upload Book Details
             </button>
