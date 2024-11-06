@@ -1,15 +1,5 @@
 import axios, { AxiosResponse } from "axios";
 
-// interface BookData {
-//     title: string;
-//     author: string;
-//     category: string;
-//     description: string;
-//     image?: string;
-//     price: number;
-//     language: string;
-// }
-
 interface ApiResponse<T = any> {
     message: string;
     data?: T;
@@ -17,7 +7,9 @@ interface ApiResponse<T = any> {
 
 // Create the Axios instance
 const API = axios.create({
-    baseURL: "http://localhost:8000/api",
+    //   baseURL: "https://bookstore-backend-a3mw.onrender.com",
+    baseURL: "https://localhost:9001/api",
+
 });
 
 export const postBookApi = (bookData: FormData): Promise<AxiosResponse<ApiResponse>> => {
