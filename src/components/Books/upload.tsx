@@ -5,6 +5,7 @@ import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 interface UploadFileProps {
   fileType: string;
   maxFiles?: number;
+  onFilesChange: (files: File[]) => void;
 }
 
 const Container = styled.div`
@@ -59,11 +60,8 @@ const PreviewContainer = styled.div<{ itemCount: number }>`
 
 const ImageWrapper = styled.div`
   position: relative;
-  width: 100%;
-  height: 150px;
   width: 150px;
-  max-width: 150px;
-  max-height: 150px;
+  height: 150px;
   overflow: hidden;
   border-radius: 8px;
   display: flex;
@@ -96,17 +94,19 @@ const CloseButton = styled.button`
   }
 `;
 
-const UploadFile: React.FC<UploadFileProps> = ({ fileType, maxFiles = 6 }) => {
+const UploadFile: React.FC<UploadFileProps> = ({ fileType, maxFiles = 6, onFilesChange }) => {
   const [files, setFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
     if (files.length + selectedFiles.length > maxFiles) {
-      alert(`You can upload a maximum of ${maxFiles} images.`);
+      alert(`You can upload a maximum of ${maxFiles} files.`);
       return;
     }
-    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    const newFiles = [...files, ...selectedFiles];
+    setFiles(newFiles);
+    onFilesChange(newFiles); // Call the callback with the new files array
   };
 
   const handleClick = () => {
@@ -116,7 +116,9 @@ const UploadFile: React.FC<UploadFileProps> = ({ fileType, maxFiles = 6 }) => {
   };
 
   const removeFile = (fileToRemove: File) => {
-    setFiles((prevFiles) => prevFiles.filter((file) => file !== fileToRemove));
+    const updatedFiles = files.filter((file) => file !== fileToRemove);
+    setFiles(updatedFiles);
+    onFilesChange(updatedFiles); // Update parent with the remaining files
   };
 
   return (
@@ -124,7 +126,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ fileType, maxFiles = 6 }) => {
       {files.length < maxFiles && (
         <UploadBox onClick={handleClick}>
           <Icon />
-          <Title>Upload Images</Title>
+          <Title>Upload Files</Title>
           <HiddenInput
             type="file"
             accept={fileType}
